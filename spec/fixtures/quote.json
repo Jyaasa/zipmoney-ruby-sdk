@@ -1,0 +1,109 @@
+{
+  "consumer": {
+    "gender": 1,
+    "dob": "2015-11-16T10:59:56.8609325+11:00",
+    "email": "sample string 6",
+    "first_name": "sample string 9",
+    "last_name": "sample string 10",
+    "phone": "sample string 11",
+    "title": "sample string 13",
+    "account_created_on": "2015-11-16T10:59:56.923428+11:00",
+    "last_login": "2015-11-16T10:59:56.923428+11:00",
+    "lifetime_sales_amount": 14.0,
+    "average_sale_value": 15.0,
+    "maximum_sale_value": 16.0,
+    "lifetime_sales_units": 17,
+    "lifetime_sales_refunded_amount": 18.0,
+    "declined_before": true,
+    "chargeback_before": true
+  },
+  "shipping_address": {
+    "first_name": "sample string 1",
+    "last_name": "sample string 2",
+    "line1": "sample string 3",
+    "line2": "sample string 4",
+    "country": "sample string 5",
+    "zip": "sample string 6",
+    "city": "sample string 7",
+    "state": "sample string 8",
+    "options": [
+      {
+        "id": "sample string 1",
+        "name": "sample string 2",
+        "value": 3.0
+      },
+      {
+        "id": "sample string 1",
+        "name": "sample string 2",
+        "value": 3.0
+      }
+    ],
+    "selected_option_id": "sample string 9",
+    "OneLineAddress": "sample string 3 sample string 7 sample string 6"
+  },
+  "billing_address": {
+    "first_name": "sample string 1",
+    "last_name": "sample string 2",
+    "line1": "sample string 3",
+    "line2": "sample string 4",
+    "country": "sample string 5",
+    "zip": "sample string 6",
+    "city": "sample string 7",
+    "state": "sample string 8",
+    "options": [
+      {
+        "id": "sample string 1",
+        "name": "sample string 2",
+        "value": 3.0
+      },
+      {
+        "id": "sample string 1",
+        "name": "sample string 2",
+        "value": 3.0
+      }
+    ],
+    "selected_option_id": "sample string 9",
+    "OneLineAddress": "sample string 3 sample string 7 sample string 6"
+  },
+  "checkout_source": "sample string 1",
+  "cart_url": "sample string 5",
+  "success_url": "https://your-domain/zipmoney/standard/success/",
+  "cancel_url": "https://your-domain/zipmoney/standard/cancel/",
+  "refer_url": "https://your-domain/zipmoney/standard/success/",
+  "error_url": "https://your-domain/zipmoney/standard/error/",
+  "decline_url": "https://your-domain/zipmoney/standard/decline/",
+  "quote_id": "1",
+  "token": "sample string 9",
+  "order": {
+    "id": "901000378",
+    "tax": 0,
+    "shipping_value": 0,
+    "total": 339.95,
+    "detail": [
+      {
+        "quantity": 1,
+        "name": "GoPro Hero3+ Silver Edition - Silver",
+        "price": 339.95,
+        "description": "GoPro HERO3+",
+        "sku": "GOP-HERO3-PLUS-SLV",
+        "id": "10758",
+        "category": "Action Cameras",
+        "image_url": "img-url"
+      }
+    ]
+  },
+  "version": {
+    "client": "sample string 1",
+    "platform": "sample string 2"
+  },
+  "metadata": {
+    "order_reference": "sample string 1",
+    "scenario": 2,
+    "attributes": {
+      "sample string 1": "sample string 2",
+      "sample string 3": "sample string 4"
+    }
+  },
+  "error_code": 10,
+  "message": "sample string 11"
+}

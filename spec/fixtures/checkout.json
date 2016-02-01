@@ -1,0 +1,65 @@
+{
+  "charge": false,
+  "currency_code": "AUD",
+  "consumer": {
+    "gender": 1,
+    "dob": "0001-01-01T00:00:00",
+    "email": "consumer-checkout@mailinator.com",
+    "first_name": "consumer",
+    "last_name": "checkout",
+    "phone": "0400000000",
+    "title": null
+  },
+  "shipping_address": {
+    "first_name": "consumer",
+    "last_name": "checkout",
+    "line1": "20 Bridge Street",
+    "line2": "",
+    "country": "AU",
+    "zip": "2000",
+    "city": "Sydney",
+    "state": "NSW"
+  },
+  "billing_address": {
+     "first_name": "consumer",
+    "last_name": "checkout",
+    "line1": "20 Bridge Street",
+    "line2": "",
+    "country": "AU",
+    "zip": "2000",
+    "city": "Sydney",
+    "state": "NSW"
+  },
+  "return_url": "https://your-domain/zipmoney/standard/success/",
+  "cancel_url": "https://your-domain/zipmoney/standard/cancel/",
+  "notify_url": "https://your-domain/zipmoney/standard/success/",
+  "error_url": "https://your-domain/zipmoney/standard/error/",
+  "in_store": false,
+  "order_id": "901000379",
+  "txn_id": "2105-yE1xB0btXw",
+  "order": {
+    "id": "901000378",
+    "tax": 0,
+    "shipping_value": 0,
+    "total": 339.95,
+    "detail": [
+      {
+        "quantity": 1,
+        "name": "GoPro Hero3+ Silver Edition - Silver",
+        "price": 339.95,
+        "description": "GoPro HERO3+",
+        "sku": "GOP-HERO3-PLUS-SLV",
+        "id": "10758",
+        "category": "Action Cameras",
+        "image_url": "img-url"
+      }
+    ]
+  },
+  "version": {
+    "client": "your-client-version",
+    "platform": "your-platform"
+  },
+  "metadata": {
+    "order_reference": "(optional)your-order-ref"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "base_url": "http://local.zipmoney.com.au/wp-4.3.1/",
+  "version": {
+    "client": "sample string 1",
+    "platform": "sample string 2"
+  }
+}
