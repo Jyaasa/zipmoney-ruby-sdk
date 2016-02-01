@@ -38,10 +38,12 @@ module ZipMoney
 		def getRedirectUrl
 
 	        raise ArgumentError, "Response body doesnot exist" if _responseBody.nil? || _responseBody.empty?
+	        
+	        resObj = toObject
 
-			return false if toObject.redirect_url.nil?  || toObject.redirect_url.empty?
+			return false if resObj.redirect_url.nil?  || resObj.redirect_url.empty?
 
-			toObject.redirect_url
+			resObj.redirect_url
 		end
 
 		def getStatusCode
@@ -56,6 +58,15 @@ module ZipMoney
 
 		end
 
+
+		def getError
+	        raise ArgumentError, "Response body doesnot exist" if _responseBody.nil? || _responseBody.empty?
+	        
+	        resObj = toObject
+
+	        resObj.Message
+
+		end
 
 	    		
 	end

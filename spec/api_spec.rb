@@ -6,9 +6,9 @@ describe ZipMoney::Api do
 	before :each do
 		# Setup the gateway for testing
 		
-		  ZipMoney::Configuration.merchant_id  = 4
-	    ZipMoney::Configuration.merchant_key = "4mod1Yim1GEv+D5YOCfSDT4aBEUZErQYMJ3EtdOGhQY="
-	    ZipMoney::Configuration.environment  = 'sandbox'
+		  Configuration.merchant_id  = 4
+	    Configuration.merchant_key = "4mod1Yim1GEv+D5YOCfSDT4aBEUZErQYMJ3EtdOGhQY="
+	    Configuration.environment  = 'sandbox'
 
 		@api = ZipMoney.api
 	end
@@ -35,9 +35,44 @@ describe ZipMoney::Api do
 
       checkout_json = JSON.parse(File.read("spec/fixtures/checkout.json"))
 
-      response = @api.request("checkout",:post,checkout_json)
+      response = @api.checkout(checkout_json)
 
-      puts response.getRedirectUrl
+      if response.isSuccess
+        puts response.getRedirectUrl
+      else
+        puts response.getError
+      end
+
+    end 
+
+
+    it "should make quote request and return redirect_url" do 
+
+      checkout_json = JSON.parse(File.read("spec/fixtures/quote.json"))
+
+      response = @api.quote(checkout_json)
+
+      if response.isSuccess
+        puts response.getRedirectUrl
+      else
+        puts response.getError
+      end
+
+    end
+    
+
+    it "should make capture request and return redirect_url" do 
+
+      checkout_json = JSON.parse(File.read("spec/fixtures/quote.json"))
+
+      response = @api.capture(checkout_json)
+
+      if response
+        puts response.getRedirectUrl
+      else
+        puts response
+      end
+
     end
 
 end	

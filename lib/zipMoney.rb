@@ -11,26 +11,27 @@ require_relative "zipMoney/api"
 require_relative "zipMoney/response"
 
 module ZipMoney
-   extend self
+    extend self
 
-   attr_accessor :config
-   attr_accessor :_api
+    attr_accessor :config, :_api
 
-   def api
+    def api
 
-    self.config = Configuration	
+      self.config = Configuration	
 
-    configure_api
+      configure_api
   
-    raise ApiError.new("Please configure the Api first") if self.config.nil?
-   	self._api
-   end
+      raise ApiError.new("Please configure the Api first") if self.config.nil?
 
-   def configure_api
+   	  self._api
+
+    end
+
+    def configure_api
     
-    options = {:headers => {:content_type => :json}}
+      options = {:headers => {:content_type => :json}}
 
-    self._api = Api.new(self.config,options)
-   end
+      self._api = Api.new(self.config,options)
+    end
 
 end

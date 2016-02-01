@@ -5,6 +5,11 @@ module ZipMoney
 
 		attr_accessor :options , :config, :payload
 
+		HTTP_METHOD_POST  = :post
+		
+		HTTP_METHOD_GET   = :post
+
+
 		def initialize(conf,opt={})	      	
 			
 			if conf.new.class == ZipMoney::Configuration
@@ -38,7 +43,7 @@ module ZipMoney
 			data = append_api_credentials(data)
 
 			if method == :post
-				payload = data.to_json
+				payload = prepare_params(params)
 			else
 				payload = {}
 			end
@@ -56,6 +61,151 @@ module ZipMoney
 			end
 		end
 		
-	 
+		def prepare_params(data)
+			
+			begin
+			  
+			   JSON.parse(data)
+
+			rescue JSON::ParserError => e
+			    
+			    if data.is_a?(Hash)
+			   	   data = data.to_json
+			   	else  
+	        		raise ArgumentError, "Invalid params provided" 
+				end
+
+			end
+				
+			data
+		end	
+
+		def  checkout(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_CHECKOUT, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+		
+		def  quote(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+		
+		def  capture(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+		
+		def  refund(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+		def  cancel(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+		def  query(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+		def  configure(params)
+
+	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+		def  settings
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+
+		def  heartbeat()
+
+
+			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST)
+
+			if response.isSuccess
+				response
+			else
+				response.getError
+			end
+
+		end	
+
+
+
+
 	end
 end

@@ -44,7 +44,6 @@ module ZipMoney
 	    	
 	    	def get_url(resource, get_params = nil)
 				
-
 				if Configuration.is_sandbox
 					url = "#{Configuration::ENV_TEST_API_URL}"
 				else
