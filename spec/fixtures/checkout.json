@@ -21,7 +21,7 @@
     "state": "NSW"
   },
   "billing_address": {
-     "first_name": "consumer",
+   "first_name": "consumer",
     "last_name": "checkout",
     "line1": "20 Bridge Street",
     "line2": "",

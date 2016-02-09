@@ -1,46 +1,50 @@
 module ZipMoney
 	class Api	
 
-		DEFAULT_OPTIONS = {:version => Configuration::API_VERSION}
-
-		attr_accessor :options , :config, :payload
+		attr_accessor :options, :config, :payload, :response
 
 		HTTP_METHOD_POST  = :post
-		
-		HTTP_METHOD_GET   = :post
-
+		HTTP_METHOD_GET   = :get
 
 		def initialize(conf,opt={})	      	
-			
 			if conf.new.class == ZipMoney::Configuration
 	        	self.config = conf
 	      	else
-	        	raise ArgumentError, "config is an invalid type"
+	        	raise ArgumentError, "Config is not valid"
 	      	end
-	      	self.options = DEFAULT_OPTIONS.merge(opt)
-
-
+	      	self.options = opt
 		end
 
 		def append_api_credentials(data)
+			
+			is_param_defined(data) do
+				data = Struct::ApiCredentials.new
+				data.version = Struct::Version.new
+			end	
 
-			data = Hash.new if !data.is_a?(Hash)
-
-			if data[:merchant_id]  == nil
-			   data[:merchant_id]  = self.config.merchant_id
+			if data.merchant_id  == nil 
+			   data.merchant_id  = self.config.merchant_id
 			end
-
-			if data[:merchant_key] == nil
-			   data[:merchant_key] = self.config.merchant_key
+			if data.merchant_key == nil
+			   data.merchant_key = self.config.merchant_key
 			end
-
+			if data.version.client == nil
+			   data.version.client = ZipMoney::Configuration::API_NAME + " Version:" + ZipMoney::Configuration::API_VERSION
+			end
+			if data.version.platform == nil
+			   data.version.platform = ZipMoney::Configuration::API_PLATFORM
+			end
 			data	
 		end	
 
-		def request(resource, method,  data = nil)
-			resource = Resources.get(resource, method, data)
+		def is_param_defined(data)
+			yield if !data.is_a?(Struct) 
+		end	
 
-			data = append_api_credentials(data)
+		def request(resource, method,  params = nil)
+			resource = Resources.get(resource, method, params)
+
+			params   = append_api_credentials(params)
 
 			if method == :post
 				payload = prepare_params(params)
@@ -50,162 +54,70 @@ module ZipMoney
 
 			headers = self.options[:headers] || {}
 
-			if method == :get
+			if method == :get 
 				resource.send(method, headers) do |response, request, result, &block| 
-				    Response.new(response)
+				  	ZipMoney::Response.new(response)
 				end
 			else
 				resource.send(method, payload, headers) do |response, request, result, &block|
-					Response.new(response)
+					ZipMoney::Response.new(response)
 				end
 			end
 		end
 		
 		def prepare_params(data)
-			
 			begin
-			  
-			   JSON.parse(data)
-
-			rescue JSON::ParserError => e
-			    
+			    data =  Util.struct_to_hash(data).to_json
+			rescue TypeError => e
 			    if data.is_a?(Hash)
 			   	   data = data.to_json
 			   	else  
 	        		raise ArgumentError, "Invalid params provided" 
 				end
-
+			rescue JSON::ParserError => e
+			    if data.is_a?(Hash)
+			   	   data = data.to_json
+			   	else  
+	        		raise ArgumentError, "Invalid params provided" 
+				end
 			end
-				
 			data
 		end	
 
-		def  checkout(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_CHECKOUT, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def checkout(params)
+			request(Resources::RESOURCE_CHECKOUT, HTTP_METHOD_POST, params)
 		end	
 		
-		def  quote(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def quote(params)
+			request(Resources::RESOURCE_QUOTE, HTTP_METHOD_POST, params)
 		end	
 		
-		def  capture(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def capture(params)
+			request(Resources::RESOURCE_CAPTURE, HTTP_METHOD_POST, params)
 		end	
 		
-		def  refund(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def refund(params)
+			request(Resources::RESOURCE_REFUND, HTTP_METHOD_POST, params)
 		end	
 
-		def  cancel(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def cancel(params)
+			request(Resources::RESOURCE_CANCEL, HTTP_METHOD_POST, params)
 		end	
 
-		def  query(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def query(params)
+			request(Resources::RESOURCE_QUERY, HTTP_METHOD_POST, params)
 		end	
 
-		def  configure(params)
-
-	        raise ArgumentError, "Params not provided" if params.nil? || params.empty?
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST, params)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def configure(params)
+			request(Resources::RESOURCE_CONFIGURE, HTTP_METHOD_POST, params)
 		end	
 
-		def  settings
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def settings
+			request(Resources::RESOURCE_SETTINGS, HTTP_METHOD_POST)
 		end	
 
-
-		def  heartbeat()
-
-
-			response = @api.request(Resources::RESOURCE_QUOTE, self::HTTP_METHOD_POST)
-
-			if response.isSuccess
-				response
-			else
-				response.getError
-			end
-
+		def heartbeat
+			request(Resources::RESOURCE_HEARTBEAT, HTTP_METHOD_POST)
 		end	
-
-
-
-
 	end
 end
