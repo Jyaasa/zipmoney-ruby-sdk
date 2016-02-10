@@ -23,6 +23,27 @@ module ZipMoney
 	      		end
 				hash
 	      	end	
+
+	      	def json_parse(data)
+	    		begin
+				    data =  JSON.parse(data)
+				rescue TypeError => e					
+				    if !data.is_a?(Hash) && !data.is_a?(Struct) && !data.is_a?(OpenStruct)
+		        		raise ArgumentError, "Invalid params provided" 
+					end
+				rescue JSON::ParserError => e
+				    if !data.is_a?(Hash) && !data.is_a?(Struct) && !data.is_a?(OpenStruct)
+		        		raise ArgumentError, "Invalid params provided" 
+					end
+				end
+				data
+    		end
+
+    		def credentials_valid(merchant_id,merchant_key)
+	    		if !Configuration.merchant_id.eql?(merchant_id) || !Configuration.merchant_key.eql?(merchant_key)
+					raise ExpressError, "Invalid merchant credentials in the request" 
+	    		end	
+	    	end
 	    end
 	end	
 end
