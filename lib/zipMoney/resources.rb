@@ -4,25 +4,36 @@ module ZipMoney
 		RESOURCE_SETTINGS                 = 'settings'
 	    RESOURCE_CONFIGURE                = 'configure'
 	    RESOURCE_QUOTE                    = 'quote'
-	    RESOURCE_ORDER_SHIPPING_ADDRESS   = 'order'
-	    RESOURCE_ORDER_CANCEL             = 'cancel'
-	    RESOURCE_ORDER_REFUND             = 'refund'
+	    RESOURCE_CANCEL             	  = 'cancel'
+	    RESOURCE_REFUND             	  = 'refund'
 	    RESOURCE_CHECKOUT                 = 'checkout'
 	    RESOURCE_QUERY                    = 'query'
 	    RESOURCE_CAPTURE                  = 'capture'
 	    RESOURCE_HEART_BEAT               = 'Heartbeat'
 
 	    class << self
-			
-			def get(resource, method = :post, get_params = nil)
-				return false unless self.resource_exists(resource)
+			# Checks if passed resource is valid and returns RestClient::Resource object 
+			# configured with the passed resource and url
+			#
+			# @param [resource] endpoint resource 
+			# @param [method] method  get|post
+			# @param [query_string] query_string parameters
+			#
+			# @return RestClient::Resource object
+			def get(resource, method = :post, query_string = nil)
+				return false unless resource_exists(resource)
 				
-				url = get_url(resource, (method == :get ? get_params : nil))
+				url = get_url(resource, (method == :get ? query_string : nil))
 				ssl_opts = {:verify_ssl => OpenSSL::SSL::VERIFY_PEER}
 	  			opts = {}
     			RestClient::Resource.new(url, opts.merge(ssl_opts))
 	    	end	
 
+	    	# Checks if passed resource exists 
+			#
+			# @param [resource] endpoint resource 
+			#
+			# @return ZipMoney::Response object
 	    	def resource_exists(resource)
 	    		if resource.is_a?(String)
 	    			if(self.constants.map{ |k| self.const_get(k).downcase }.include?resource)
@@ -33,8 +44,13 @@ module ZipMoney
 	    		end
 	    	end
 	    		
-	    	
-	    	def get_url(resource, get_params = nil)
+	    	# Builds the proper endpoint url with the given resource
+			#
+			# @param [resource] endpoint resource 
+			# @param [query_string] query_string parameters
+			#
+			# @return String
+	    	def get_url(resource, query_string = nil)
 				if Configuration.is_sandbox
 					url = "#{Configuration::ENV_TEST_API_URL}"
 				else
@@ -43,9 +59,9 @@ module ZipMoney
 
 				url = 	url + resource
 
-				unless get_params.nil?
+				unless query_string.nil?
 					url = url + "?" + 
-					get_params.map do |key, value|
+					query_string.map do |key, value|
 						"#{key}=#{value}" 
 					end.join("&")
 				end

@@ -6,6 +6,9 @@ module ZipMoney
 
 		Struct.new("RefundParams", :reason, :refund_amount, :txn_id, :order_id, :quote_id, :order, :reference, :version, :metadata, :merchant_id, :merchant_key)
 		
+		# Initializes a ZipMoney::Refund object
+        #
+        # Returns ZipMoney::Refund object
 		def initialize 
 			@params 		 = Struct::RefundParams.new
 			@params.order 	 = Struct::Order.new
@@ -13,13 +16,17 @@ module ZipMoney
 			@params.version  = Struct::Version.new
 			@params.order.detail = Array.new
 		end
-			
+		
+		# Performs the Refund api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Refund object	
 		def do	
-			raise ArgumentError, "Params emtpy" if params.nil? 
+			validate
 			ZipMoney.api.refund(self.params)
 		end
-
-		def validate_params
+		
+		# Performs the parameters validation
+		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []
           	@errors << 'reason must be provided' if self.params.reason.nil? 

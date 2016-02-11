@@ -1,4 +1,4 @@
-require 'helper'
+require 'spec_helper'
 
 
 describe ZipMoney::Configuration do

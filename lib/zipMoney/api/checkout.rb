@@ -4,9 +4,12 @@ module ZipMoney
 		
 		attr_accessor :params
 
-		Struct.new("CheckoutParams", :charge, :currency_code, :return_url, :cancel_url, :notify_url, :error_url, :in_store, :txn_id, :merchant_id, :merchant_key, 
+		Struct.new("CheckoutParams", :charge, :currency_code, :return_url, :cancel_url, :notify_url, :error_url, :in_store, :txn_id, :token, :merchant_id, :merchant_key, 
 									:order_id, :order, :consumer, :billing_address, :shipping_address, :version, :metadata)
 		
+		# Initializes a ZipMoney::Checkout object
+        #
+        # Returns ZipMoney::Checkout object
 		def initialize 
 			@params 		= Struct::CheckoutParams.new
 			@params.order 	= Struct::Order.new
@@ -15,16 +18,18 @@ module ZipMoney
 			@params.consumer = Struct::Consumer.new
 			@params.metadata = Struct::Metadata.new
 			@params.version  = Struct::Version.new
-
 			@params.order.detail =  Array.new
 		end
-			
+
+		# Performs the Checkout api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Checkout object	
 		def do	
 			validate
-
 			ZipMoney.api.checkout(self.params)
 		end
-
+		
+		# Performs the parameters validation
 		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []

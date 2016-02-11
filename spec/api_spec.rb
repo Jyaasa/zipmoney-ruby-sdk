@@ -1,28 +1,28 @@
-require 'helper'
+require 'spec_helper'
 
 
 describe ZipMoney::Api do
   	
   	before :each do
   		# Setup the gateway for testing
-  		ZipMoney::Configuration.merchant_id  = 4
-      ZipMoney::Configuration.merchant_key = "4mod1Yim1GEv+D5YOCfSDT4aBEUZErQYMJ3EtdOGhQY="
-  	  ZipMoney::Configuration.environment  = 'sandbox'
+      ZipMoney::Configuration.merchant_id  = 86
+      ZipMoney::Configuration.merchant_key = "QCXlS0BOrFl+hkd2fbSR7ujEuDP4WZECYw4oB0il5eE="
+      ZipMoney::Configuration.environment  = 'sandbox'
+
+      @order_id = '%010d' % rand(10 ** 10)
+ 
   	end
 
   	it "should make settings request" do
      	
       settings = ZipMoney::Settings.new
       response = settings.do()
-     
-      if response.isSuccess 
-        puts response.toObject.Settings
-      else
-        puts response.getError
-      end
+      
+      response.isSuccess.should be_truthy
+      response.toObject.Settings.should_not be_nil
   	end
 
-
+    # Checkout
     it "should make checkout request and return redirect_url" do 
 
       checkout_json = JSON.parse(File.read("spec/fixtures/checkout.json"))
@@ -38,9 +38,9 @@ describe ZipMoney::Api do
         checkout.params.notify_url    = checkout_json["notify_url"]
         checkout.params.error_url     = checkout_json["error_url"]
         checkout.params.in_store      = checkout_json["in_store"]
-        checkout.params.order_id      = checkout_json["order_id"]
+        checkout.params.order_id      = @order_id
 
-        checkout.params.order.id              = checkout_json["order"]["id"]
+        checkout.params.order.id              = @order_id
         checkout.params.order.tax             = checkout_json["order"]["tax"]
         checkout.params.order.shipping_value  = checkout_json["order"]["shipping_value"]
         checkout.params.order.total           = checkout_json["order"]["total"]
@@ -84,15 +84,13 @@ describe ZipMoney::Api do
         checkout.params.consumer.dob        = checkout_json["consumer"]["dob"]
         checkout.params.consumer.title      = checkout_json["consumer"]["title"]
 
-      response = checkout.do()
+      response = checkout.do()      
+      puts response.toHash
 
-      if response.isSuccess
-        puts response.getRedirectUrl
-      else
-        puts response.getError
-      end
+      response.isSuccess.should be_truthy
     end 
 
+    # Quote
     it "should make quote request and return redirect_url" do 
 
       quote_json = JSON.parse(File.read("spec/fixtures/quote.json"))
@@ -157,11 +155,130 @@ describe ZipMoney::Api do
         quote.params.consumer.title      = quote_json["consumer"]["title"]
 
       response = quote.do()
+      puts response.toHash
+      response.isSuccess.should be_truthy
+    
+    end 
 
-      if response.isSuccess
-        puts response.getRedirectUrl
-      else
-        puts response.getError
-      end
+    # Capture
+    it "should make capture request" do 
+
+      capture_json = JSON.parse(File.read("spec/fixtures/capture.json"))
+
+      # Request 
+      capture = ZipMoney::Capture.new
+
+        capture.params.txn_id        = capture_json["txn_id"]
+        capture.params.order_id      = @order_id
+
+        capture.params.order.id              = @order_id
+        capture.params.order.tax             = capture_json["order"]["tax"]
+        capture.params.order.shipping_value  = capture_json["order"]["shipping_value"]
+        capture.params.order.total           = capture_json["order"]["total"]
+
+        capture.params.order.detail[0] = Struct::Detail.new
+        
+        item = capture_json["order"]["detail"]
+
+        capture.params.order.detail[0].quantity = item[0]["quantity"]
+        capture.params.order.detail[0].name  = item[0]["name"]
+        capture.params.order.detail[0].price = item[0]["price"]
+        capture.params.order.detail[0].description = item[0]["description"]
+        capture.params.order.detail[0].sku = item[0]["sku"]
+        capture.params.order.detail[0].id  = item[0]["id"]
+        capture.params.order.detail[0].category  = item[0]["category"]
+        capture.params.order.detail[0].image_url = item[0]["image_url"]
+
+      response = capture.do()
+      p response.toHash
+      response.isSuccess.should be_truthy
+
+    end 
+
+    # Refund 
+    it "should make refund request" do 
+
+      refund_json = JSON.parse(File.read("spec/fixtures/refund.json"))
+
+      # Request 
+      refund = ZipMoney::Refund.new
+
+        refund.params.reason        = refund_json["reason"]
+        refund.params.refund_amount = refund_json["refund_amount"]
+        refund.params.txn_id        = refund_json["txn_id"]
+        refund.params.order_id      = @order_id
+
+        refund.params.order.id              = @order_id
+        refund.params.order.tax             = refund_json["order"]["tax"]
+        refund.params.order.shipping_value  = refund_json["order"]["shipping_value"]
+        refund.params.order.total           = refund_json["order"]["total"]
+
+        refund.params.order.detail[0] = Struct::Detail.new
+        
+        item = refund_json["order"]["detail"]
+
+        refund.params.order.detail[0].quantity = item[0]["quantity"]
+        refund.params.order.detail[0].name  = item[0]["name"]
+        refund.params.order.detail[0].price = item[0]["price"]
+        refund.params.order.detail[0].description = item[0]["description"]
+        refund.params.order.detail[0].sku = item[0]["sku"]
+        refund.params.order.detail[0].id  = item[0]["id"]
+        refund.params.order.detail[0].category  = item[0]["category"]
+        refund.params.order.detail[0].image_url = item[0]["image_url"]
+
+      response = refund.do()
+      p response.toHash
+      response.isSuccess.should be_truthy
+    end 
+
+    # Cancel 
+    it "should make cancel request" do 
+
+      cancel_json = JSON.parse(File.read("spec/fixtures/cancel.json"))
+
+      # Request 
+      cancel = ZipMoney::Cancel.new
+
+        cancel.params.txn_id        = cancel_json["txn_id"]
+        cancel.params.order_id      = @order_id
+
+        cancel.params.order.id              = @order_id
+        cancel.params.order.tax             = cancel_json["order"]["tax"]
+        cancel.params.order.shipping_value  = cancel_json["order"]["shipping_value"]
+        cancel.params.order.total           = cancel_json["order"]["total"]
+
+        cancel.params.order.detail[0] = Struct::Detail.new
+        
+        item = cancel_json["order"]["detail"]
+
+        cancel.params.order.detail[0].quantity = item[0]["quantity"]
+        cancel.params.order.detail[0].name  = item[0]["name"]
+        cancel.params.order.detail[0].price = item[0]["price"]
+        cancel.params.order.detail[0].description = item[0]["description"]
+        cancel.params.order.detail[0].sku = item[0]["sku"]
+        cancel.params.order.detail[0].id  = item[0]["id"]
+        cancel.params.order.detail[0].category  = item[0]["category"]
+        cancel.params.order.detail[0].image_url = item[0]["image_url"]
+
+      response = cancel.do()
+      p response.toHash
+      response.isSuccess.should be_truthy
+    end 
+
+    # Query 
+    it "should make query request" do 
+
+      query_json = JSON.parse(File.read("spec/fixtures/query.json"))
+
+      # Request 
+      query = ZipMoney::Query.new
+        query.params.orders[0] = Struct::QueryOrder.new
+
+        query.params.orders[0].id     = @order_id
+        query.params.orders[0].status = query_json["orders"][0]["shipping_value"]
+
+      response = query.do()
+      p response.toHash
+      response.isSuccess.should be_truthy
     end 
 end	

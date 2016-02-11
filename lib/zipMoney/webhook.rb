@@ -20,20 +20,29 @@ module ZipMoney
 	    TYPE_SUBSCRIPTION_CONFIRMATION = "SubscriptionConfirmation"
 	    TYPE_NOTIFICATION 		  	   = "Notification"
 
-	    def self.process(payload,&block)
-			raise WebHookRequestError, "Payload emtpy" if payload.nil? 
-			data = Util.json_parse(payload)
-			if data["Type"] == TYPE_SUBSCRIPTION_CONFIRMATION
-    			subscribe(data["SubscribeURL"])
-    		elsif data["Type"] == TYPE_NOTIFICATION	
-    			process_notifications(data, &block)
+
+        # Process the webhook
+        #
+        # @param [request] WebHook's request 
+        # @param [block] Actions to be taken for respective notifications
+	    def self.process(request,&block)
+			raise WebHookRequestError, "Payload emtpy" if request.nil? 
+			request = Util.json_parse(request)
+			if request["Type"] == TYPE_SUBSCRIPTION_CONFIRMATION
+    			subscribe(request["SubscribeURL"])
+    		elsif request["Type"] == TYPE_NOTIFICATION	
+    			process_notifications(request, &block)
     		end	
     	end
-
-    	def self.process_notifications(data, &block)
-    		raise ArgumentError, "Invalid params provided" if data["Message"].nil?
-    		message = Util.json_parse(data["Message"])
-    		Util.credentials_valid(message["response"]["merchant_id"], message["response"]["merchant_key"])
+        
+        # Process the webhook notifications
+        #
+        # @param [request] WebHook's request 
+        # @param [block] Actions to be taken for respective notifications
+    	def self.process_notifications(request, &block)
+    		raise ArgumentError, "Invalid params provided" if request["Message"].nil?
+    		message = Util.json_parse(request["Message"])
+    		Configuration.credentials_valid(message["response"]["merchant_id"], message["response"]["merchant_key"])
     		raise ArgumentError, "Response empty" if message["response"].nil?
     		
     		if (block.arity > 0)
@@ -41,12 +50,19 @@ module ZipMoney
     		end	
     	end
 
+        # Subscribes for the webhook notifications by calling the subscription url
+        #
+        # @param [request] WebHook's request 
+        # @param [block] Actions to be taken for respective notifications
     	def self.subscribe(url)			
     		raise WebHookError, "Url emtpy" if url.nil? 
-    		RestClient.get(url)
+    		
+    		begin
+    			response = RestClient.get(url)
+    		rescue
+    			raise WebHookError, "Unable to reach the subscription url #{url}" if response.nil?
+    		end	
+            response.code == 200 || response.code == 201
     	end	
 	end
 end
-
-
-

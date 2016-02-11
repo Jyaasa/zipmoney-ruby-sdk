@@ -7,6 +7,9 @@ module ZipMoney
 		Struct.new("QuoteParams", :currency_code, :cart_url, :success_url, :cancel_url, :refer_url, :error_url, :decline_url, :in_store, :checkout_source, :txn_id, :merchant_id, :merchant_key, 
 								  :quote_id, :order, :consumer, :billing_address, :shipping_address, :version, :metadata, :token)
 		
+		# Initializes a ZipMoney::Quote object
+        #
+        # Returns ZipMoney::Quote object
 		def initialize 
 			@params 		= Struct::QuoteParams.new
 			@params.order 	= Struct::Order.new
@@ -17,13 +20,17 @@ module ZipMoney
 			@params.version  = Struct::Version.new
 			@params.order.detail = Array.new
 		end
+		
+		# Performs the Quote api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Quote object	
 			
 		def do	
 			validate
-
 			ZipMoney.api.quote(self.params)
 		end
-
+		
+		# Performs the parameters validation
 		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []

@@ -1,5 +1,4 @@
 module ZipMoney
-	
  	class ApiError < StandardError; end	
  	class InvalidArgumentError < StandardError; end	
  	class RequestError < StandardError; end
@@ -9,5 +8,4 @@ module ZipMoney
  	class ExpressError < StandardError; end
  	class ExpressRequestError < StandardError; end
  	class ExpressResponseError < StandardError; end
-
 end

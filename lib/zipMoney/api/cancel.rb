@@ -6,6 +6,9 @@ module ZipMoney
 
 		Struct.new("CancelParams", :txn_id, :merchant_id, :merchant_key, :order, :order_id, :quote_id, :reference, :version, :metadata)
 
+		# Initializes a ZipMoney::Cancel object
+        #
+        # Returns ZipMoney::Cancel object
 		def initialize 
 			@params 		 = Struct::CancelParams.new
 			@params.order 	 = Struct::Order.new
@@ -13,13 +16,18 @@ module ZipMoney
 			@params.metadata = Struct::Metadata.new
 			@params.version  = Struct::Version.new
 		end
-			
+		
+		# Performs the Cancel api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Cancel object	
 		def do	
-			raise ArgumentError, "Params emtpy" if params.nil? 
+			validate
 			ZipMoney.api.cancel(self.params)
 		end
 
-		def validate_params
+
+		# Performs the parameters validation
+		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []
           	@errors << 'txn_id must be provided' if self.params.txn_id.nil? 

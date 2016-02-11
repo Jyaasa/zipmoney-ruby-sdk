@@ -5,19 +5,26 @@ module ZipMoney
 		attr_accessor :params
 
 		Struct.new("ConfigureParams", :base_url, :merchant_id, :merchant_key, :version, :metadata)
-	
+		
+		# Initializes a ZipMoney::Configure object
+        #
+        # Returns ZipMoney::Configure object
 		def initialize 
 			@params 		 = Struct::ConfigureParams.new
 			@params.metadata = Struct::Metadata.new
 			@params.version  = Struct::Version.new
 		end
-			
+		
+		# Performs the Configure api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Configure object	
 		def do	
-			raise ArgumentError, "Params emtpy" if params.nil? 
+			validate
 			ZipMoney.api.configure(self.params)
 		end
-
-		def validate_params
+		
+		# Performs the parameters validation
+		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []
           	@errors << 'base_url must be provided' if self.params.txn_id.nil? 

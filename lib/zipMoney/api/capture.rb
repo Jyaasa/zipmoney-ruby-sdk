@@ -4,8 +4,11 @@ module ZipMoney
 
 		attr_accessor :params
 
-		Struct.new("CaptureParams",  :txn_id, :merchant_id, :merchant_key, :order_id, :quote_id, :order, :reference, :version, :metadata)
+		Struct.new("CaptureParams",  :txn_id, :order_id, :quote_id, :order, :reference, :version, :metadata, :merchant_id, :merchant_key)
 		
+		# Initializes a ZipMoney::Capture object
+        #
+        # Returns ZipMoney::Capture object
 		def initialize 
 			@params 		 = Struct::CaptureParams.new
 			@params.order 	 = Struct::Order.new
@@ -13,13 +16,17 @@ module ZipMoney
 			@params.version  = Struct::Version.new
 			@params.order.detail = Array.new
 		end
-			
+		
+		# Performs the Capture api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Cancel object	
 		def do	
-			raise ArgumentError, "Params emtpy" if params.nil? 
+			validate
 			ZipMoney.api.capture(self.params)
 		end
 
-		def validate_params
+		# Performs the parameters validation
+		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []
           	@errors << 'txn_id must be provided' if self.params.txn_id.nil? 

@@ -6,24 +6,30 @@ module ZipMoney
 
 		Struct.new("QueryParams", :orders, :merchant_id, :merchant_key, :version, :metadata)
 		Struct.new("QueryOrder", :id, :status, :error_message, :txn_id)
-	
+		
+		# Initializes a ZipMoney::Query object
+        #
+        # Returns ZipMoney::Query object
 		def initialize 
-			@params 		 = Struct::RefundParams.new			
-			@params.order 	 = Array.new
+			@params 		 = Struct::QueryParams.new			
+			@params.orders 	 = Array.new
 			@params.metadata = Struct::Metadata.new
 			@params.version  = Struct::Version.new
 		end
-			
+		
+		# Performs the Query api call on zipMoney endpoint
+        #
+        # Returns ZipMoney::Query object	
 		def do	
-			raise ArgumentError, "Params emtpy" if params.nil? 
+			validate
 			ZipMoney.api.query(self.params)
 		end
 
-		def validate_params
+		# Performs the parameters validation
+		def validate
 			raise ArgumentError, "Params emtpy" if params.nil? 
 			@errors = []
-          	@errors << 'order must be provided' if self.params.order.nil? 
-          	@errors << 'order.id must be provided' if self.params.order.id.nil? 
+          	@errors << 'at least one order must be provided' if self.params.orders.nil? 
           	raise ZipMoney::RequestError.new("Following error(s) occurred while making request, please resolve them to make the request: #{@errors}") if @errors.any?
 		end
 	end

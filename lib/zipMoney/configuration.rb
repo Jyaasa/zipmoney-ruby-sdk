@@ -19,6 +19,11 @@ module ZipMoney
 	    class << self
 	      	attr_accessor *ATTRIBUTES
 
+			# Checks if passed value is valid and assigns it true
+			#
+			# @param [env] Environment sandbox|live
+			#
+			# @return true|false
 	      	def environment=(env)
 		      	env = env.to_sym
 		      	unless [:sandbox, :live].include?(env)
@@ -27,9 +32,22 @@ module ZipMoney
 		      @environment = env
 	    	end
 
+	    	# Checks if environment is sandbox
+	    	#
+			# @return true|false
 	    	def is_sandbox
 	    		environment.to_s == "sandbox"
 	   		end
+
+			# Checks if passed merchant_id and merchant_key match with the one provided during setup
+			#
+			# @param [merchant_id] Merchant Id
+			# @param [merchant_key] Merchant Key
+	   		def credentials_valid(merchant_id,merchant_key)
+	    		if !@merchant_id.to_i.eql?(merchant_id.to_i) || !@merchant_key.to_s.eql?(merchant_key.to_s)
+					raise ExpressError, "Invalid merchant credentials in the request" 
+	    		end	
+	    	end
 	    end
 	end
 end

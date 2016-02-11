@@ -1,12 +1,12 @@
 module ZipMoney
 	class Util
 		class << self
-			def set_instance_variables_from_hash(hash)
-	        	hash.each do |key, value|
-	          		instance_variable_set "@#{key}", value
-	        	end
-	      	end
-
+			
+			# Converts Struct objects to Hash
+			#
+			# @param [object] Struct Object 
+			#
+			# @return Hash
 	      	def struct_to_hash(object)
 	      		hash = {}
 	      		object.to_h.each  do |k,v| 
@@ -24,6 +24,11 @@ module ZipMoney
 				hash
 	      	end	
 
+	      	# Converts Hash|Struct|OpenStruct objects to Hash
+			#
+			# @param [data] Json String 
+			#
+			# @return data
 	      	def json_parse(data)
 	    		begin
 				    data =  JSON.parse(data)
@@ -38,12 +43,6 @@ module ZipMoney
 				end
 				data
     		end
-
-    		def credentials_valid(merchant_id,merchant_key)
-	    		if !Configuration.merchant_id.eql?(merchant_id) || !Configuration.merchant_key.eql?(merchant_key)
-					raise ExpressError, "Invalid merchant credentials in the request" 
-	    		end	
-	    	end
 	    end
 	end	
 end

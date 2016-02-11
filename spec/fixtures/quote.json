@@ -72,7 +72,7 @@
   "refer_url": "https://your-domain/zipmoney/standard/success/",
   "error_url": "https://your-domain/zipmoney/standard/error/",
   "decline_url": "https://your-domain/zipmoney/standard/decline/",
-  "quote_id": "1",
+  "quote_id": "123456",
   "token": "sample string 9",
   "order": {
     "id": "901000378",
