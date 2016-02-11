@@ -21,34 +21,34 @@ require_relative "zipMoney/api/settings"
 require_relative "zipMoney/api/configure"
 
 module ZipMoney
-    extend self
+  extend self
 
-    attr_accessor :config, :_api, :_webhook, :_express
-    
-    # Return the api instance
-    def api
-      @config = ZipMoney::Configuration
-      configure_api if @_api.nil?
-   	  @_api
-    end
+  attr_accessor :config, :_api, :_webhook, :_express
+  
+  # Return the api instance
+  def api
+    @config = ZipMoney::Configuration
+    configure_api if @_api.nil?
+ 	  @_api
+  end
 
-    # Configure the api
-    def configure_api
-      options = {:headers => {:content_type => :json}}
-      @_api = ZipMoney::Api.new(@config,options)
-    end
-    
-    # Return the webhook class
-    def webhook
-      @config   = ZipMoney::Configuration  
-      @_webhook = ZipMoney::WebHook if @_webhook.nil?
-      @_webhook
-    end
-    
-    # Return the express api class
-    def express
-      @config   = ZipMoney::Configuration
-      @_express = ZipMoney::Express if @_express.nil?
-      @_express
-    end
+  # Configure the api
+  def configure_api
+    options = {:headers => {:content_type => :json}}
+    @_api = ZipMoney::Api.new(@config,options)
+  end
+  
+  # Return the webhook class
+  def webhook
+    @config   = ZipMoney::Configuration  
+    @_webhook = ZipMoney::WebHook if @_webhook.nil?
+    @_webhook
+  end
+  
+  # Return the express api class
+  def express
+    @config   = ZipMoney::Configuration
+    @_express = ZipMoney::Express if @_express.nil?
+    @_express
+  end
 end
