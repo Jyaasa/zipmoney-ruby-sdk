@@ -35,13 +35,13 @@ Order should be created before payment
 # Initialize the checkout
 checkout = ZipMoney::Checkout.new
         
-checkout.params.charge        = false 	# required				 
-checkout.params.currency_code = "AUD"   # required
+checkout.params.charge        = false 					 
+checkout.params.currency_code = "AUD"   
 checkout.params.txn_id        = "12345" 
-checkout.params.return_url    = "https://your-domain/zipmoney/standard/success/"  # required
-checkout.params.cancel_url    = "https://your-domain/zipmoney/standard/cancel/"	  # required
-checkout.params.notify_url    = "https://your-domain/zipmoney/standard/success/"  # required
-checkout.params.error_url     = "https://your-domain/zipmoney/standard/error/",	  # required
+checkout.params.return_url    = "https://your-domain/zipmoney/standard/success/"  
+checkout.params.cancel_url    = "https://your-domain/zipmoney/standard/cancel/"	  
+checkout.params.notify_url    = "https://your-domain/zipmoney/standard/success/"  
+checkout.params.error_url     = "https://your-domain/zipmoney/standard/error/",	
 checkout.params.order_id      = "91005500"
 
 # Order Info
