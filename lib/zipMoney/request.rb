@@ -7,8 +7,16 @@ module ZipMoney
     Struct.new("Metadata",:order_reference, :attributes)
     Struct.new("Version",:client, :platform)
     Struct.new("ApiCredentials",:merchant_id, :merchant_key, :version)
+
+    attr_accessor :errors
+
+    def validate_item_details(order_items)
+      order_items.each_with_index do |item,index|
+        @errors << "order.detail[#{index}].id must be provided" if item.id.nil? 
+        @errors << "order.detail[#{index}].name must be provided" if item.name.nil? 
+        @errors << "order.detail[#{index}].quantity must be provided" if item.quantity.nil? 
+        @errors << "order.detail[#{index}].price must be provided" if item.price.nil? 
+      end 
+    end 
   end
 end
-
-
-

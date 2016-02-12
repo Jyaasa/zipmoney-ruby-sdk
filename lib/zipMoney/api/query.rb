@@ -22,15 +22,22 @@ module ZipMoney
     # Returns ZipMoney::Query object  
     def do  
       validate
-      ZipMoney.api.query(self.params)
+      ZipMoney.api.query(@params)
     end
 
     # Performs the parameters validation
     def validate
-      raise ArgumentError, "Params emtpy" if params.nil? 
+      raise ArgumentError, "Params emtpy" if @params.nil? 
       @errors = []
-      @errors << 'at least one order must be provided' if self.params.orders.nil? 
+      @errors << 'at least one order must be provided' if @params.orders.nil? 
+
+      @params.orders.each_with_index do |item,index|
+        @errors << "order.detail[#{index}].id must be provided" if item.id.nil? 
+      end 
+
       raise ZipMoney::RequestError.new("Following error(s) occurred while making request, please resolve them to make the request: #{@errors}") if @errors.any?
     end
+
+
   end
 end

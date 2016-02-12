@@ -62,7 +62,9 @@ module ZipMoney
     # @param [params] request parameters
     #
     # @return ZipMoney::Response object
-    def request(resource, method,  params = nil)
+    def request(resource, method,  params = nil)      
+      puts resource
+
       resource = Resources.get(resource, method, params)
       params   = append_api_credentials(params)
 
@@ -73,7 +75,7 @@ module ZipMoney
       end
 
       headers = @options[:headers] || {}
-
+      puts payload
       if method == :get 
         resource.send(method, headers) do |response, request, result, &block| 
             ZipMoney::Response.new(response)

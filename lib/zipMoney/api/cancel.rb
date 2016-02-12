@@ -21,20 +21,23 @@ module ZipMoney
     # Returns ZipMoney::Cancel object 
     def do  
       validate
-      ZipMoney.api.cancel(self.params)
+      ZipMoney.api.cancel(@params)
     end
 
     # Performs the parameters validation
     def validate
-      raise ArgumentError, "Params emtpy" if params.nil? 
+      raise ArgumentError, "Params emtpy" if @params.nil? 
       @errors = []
-      @errors << 'txn_id must be provided' if self.params.txn_id.nil? 
-      @errors << 'order must be provided' if self.params.order.nil? 
-      @errors << 'order.id must be provided' if self.params.order.id.nil? 
-      @errors << 'order.total must be provided' if self.params.order.total.nil? 
-      @errors << 'order.shipping_value must be provided' if self.params.order.shipping_value.nil? 
-      @errors << 'order.tax must be provided' if self.params.order.tax.nil? 
-      @errors << 'order detail must be provided' if self.params.order.detail.nil? 
+      @errors << 'txn_id must be provided' if @params.txn_id.nil? 
+      @errors << 'order must be provided' if @params.order.nil? 
+      @errors << 'order.id must be provided' if @params.order.id.nil? 
+      @errors << 'order.total must be provided' if@params.order.total.nil? 
+      @errors << 'order.shipping_value must be provided' if @params.order.shipping_value.nil? 
+      @errors << 'order.tax must be provided' if @params.order.tax.nil? 
+      @errors << 'order detail must be provided' if @params.order.detail.nil? 
+      
+      validate_item_details @params.order.detail
+
       raise ZipMoney::RequestError.new("Following error(s) occurred while making request, please resolve them to make the request: #{@errors}") if @errors.any?
     end
   end

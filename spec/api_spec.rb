@@ -29,60 +29,57 @@ describe ZipMoney::Api do
 
       # Request 
       checkout = ZipMoney::Checkout.new
-        
-        checkout.params.charge        = checkout_json["charge"]
-        checkout.params.currency_code = checkout_json["currency_code"]
-        checkout.params.txn_id        = checkout_json["txn_id"]
-        checkout.params.return_url    = checkout_json["return_url"]
-        checkout.params.cancel_url    = checkout_json["cancel_url"]
-        checkout.params.notify_url    = checkout_json["notify_url"]
-        checkout.params.error_url     = checkout_json["error_url"]
-        checkout.params.in_store      = checkout_json["in_store"]
-        checkout.params.order_id      = @order_id
+      params   = checkout.params
 
-        checkout.params.order.id              = @order_id
-        checkout.params.order.tax             = checkout_json["order"]["tax"]
-        checkout.params.order.shipping_value  = checkout_json["order"]["shipping_value"]
-        checkout.params.order.total           = checkout_json["order"]["total"]
+      params.charge        = checkout_json["charge"]
+      params.currency_code = checkout_json["currency_code"]
+      params.txn_id        = checkout_json["txn_id"]
+      params.return_url    = checkout_json["return_url"]
+      params.cancel_url    = checkout_json["cancel_url"]
+      params.notify_url    = checkout_json["notify_url"]
+      params.error_url     = checkout_json["error_url"]
+      params.in_store      = checkout_json["in_store"]
+      params.order_id      = @order_id
 
-        checkout.params.order.detail[0] = Struct::Detail.new
-        
-        item  = checkout_json["order"]["detail"]
+      params.order.id              = @order_id
+      params.order.tax             = checkout_json["order"]["tax"]
+      params.order.shipping_value  = checkout_json["order"]["shipping_value"]
+      params.order.total           = checkout_json["order"]["total"]
 
-        checkout.params.order.detail[0].quantity = item[0]["quantity"]
-        checkout.params.order.detail[0].name  = item[0]["name"]
-        checkout.params.order.detail[0].price = item[0]["price"]
-        checkout.params.order.detail[0].description = item[0]["description"]
-        checkout.params.order.detail[0].sku = item[0]["sku"]
-        checkout.params.order.detail[0].id  = item[0]["id"]
-        checkout.params.order.detail[0].category  = item[0]["category"]
-        checkout.params.order.detail[0].image_url = item[0]["image_url"]
+      item = Struct::Detail.new
+      
+      item.quantity = checkout_json["order"]["detail"][0]["quantity"]
+      item.name     = checkout_json["order"]["detail"][0]["name"]
+      item.price    = checkout_json["order"]["detail"][0]["price"]
+      item.id       = checkout_json["order"]["detail"][0]["id"]
 
-        checkout.params.billing_address.first_name = checkout_json["billing_address"]["first_name"]
-        checkout.params.billing_address.last_name  = checkout_json["billing_address"]["last_name"]
-        checkout.params.billing_address.line1      = checkout_json["billing_address"]["line1"]
-        checkout.params.billing_address.line2      = checkout_json["billing_address"]["line2"]
-        checkout.params.billing_address.country    = checkout_json["billing_address"]["country"]
-        checkout.params.billing_address.zip        = checkout_json["billing_address"]["zip"]
-        checkout.params.billing_address.city       = checkout_json["billing_address"]["city"]
-        checkout.params.billing_address.state      = checkout_json["billing_address"]["state"]
-        
-        checkout.params.shipping_address.first_name = checkout_json["shipping_address"]["first_name"]
-        checkout.params.shipping_address.last_name  = checkout_json["shipping_address"]["last_name"]
-        checkout.params.shipping_address.line1      = checkout_json["shipping_address"]["line1"]
-        checkout.params.shipping_address.line2      = checkout_json["shipping_address"]["line2"]
-        checkout.params.shipping_address.country    = checkout_json["shipping_address"]["country"]
-        checkout.params.shipping_address.zip        = checkout_json["shipping_address"]["zip"]
-        checkout.params.shipping_address.city       = checkout_json["shipping_address"]["city"]
-        checkout.params.shipping_address.state      = checkout_json["shipping_address"]["state"]
+      params.order.detail.push(item)
 
-        checkout.params.consumer.first_name = checkout_json["consumer"]["first_name"]
-        checkout.params.consumer.last_name  = checkout_json["consumer"]["last_name"]
-        checkout.params.consumer.phone      = checkout_json["consumer"]["phone"]
-        checkout.params.consumer.gender     = checkout_json["consumer"]["gender"]
-        checkout.params.consumer.email      = checkout_json["consumer"]["email"]
-        checkout.params.consumer.dob        = checkout_json["consumer"]["dob"]
-        checkout.params.consumer.title      = checkout_json["consumer"]["title"]
+      params.billing_address.first_name = checkout_json["billing_address"]["first_name"]
+      params.billing_address.last_name  = checkout_json["billing_address"]["last_name"]
+      params.billing_address.line1      = checkout_json["billing_address"]["line1"]
+      params.billing_address.line2      = checkout_json["billing_address"]["line2"]
+      params.billing_address.country    = checkout_json["billing_address"]["country"]
+      params.billing_address.zip        = checkout_json["billing_address"]["zip"]
+      params.billing_address.city       = checkout_json["billing_address"]["city"]
+      params.billing_address.state      = checkout_json["billing_address"]["state"]
+      
+      params.shipping_address.first_name = checkout_json["shipping_address"]["first_name"]
+      params.shipping_address.last_name  = checkout_json["shipping_address"]["last_name"]
+      params.shipping_address.line1      = checkout_json["shipping_address"]["line1"]
+      params.shipping_address.line2      = checkout_json["shipping_address"]["line2"]
+      params.shipping_address.country    = checkout_json["shipping_address"]["country"]
+      params.shipping_address.zip        = checkout_json["shipping_address"]["zip"]
+      params.shipping_address.city       = checkout_json["shipping_address"]["city"]
+      params.shipping_address.state      = checkout_json["shipping_address"]["state"]
+
+      params.consumer.first_name = checkout_json["consumer"]["first_name"]
+      params.consumer.last_name  = checkout_json["consumer"]["last_name"]
+      params.consumer.phone      = checkout_json["consumer"]["phone"]
+      params.consumer.gender     = checkout_json["consumer"]["gender"]
+      params.consumer.email      = checkout_json["consumer"]["email"]
+      params.consumer.dob        = checkout_json["consumer"]["dob"]
+      params.consumer.title      = checkout_json["consumer"]["title"]
 
       response = checkout.do()      
       puts response.toHash
@@ -98,61 +95,59 @@ describe ZipMoney::Api do
       # Request 
       quote = ZipMoney::Quote.new
 
-        quote.params.currency_code = quote_json["currency_code"]
-        quote.params.txn_id        = quote_json["txn_id"]
-        quote.params.cart_url      = quote_json["cart_url"]
-        quote.params.success_url   = quote_json["success_url"]
-        quote.params.cancel_url    = quote_json["cancel_url"]
-        quote.params.error_url     = quote_json["error_url"]
-        quote.params.refer_url     = quote_json["refer_url"]
-        quote.params.decline_url   = quote_json["decline_url"]
-        quote.params.in_store      = quote_json["in_store"]
-        quote.params.quote_id      = quote_json["quote_id"]
-        quote.params.checkout_source = quote_json["checkout_source"]
+      params = quote.params
 
-        quote.params.order.id              = quote_json["order"]["id"]
-        quote.params.order.tax             = quote_json["order"]["tax"]
-        quote.params.order.shipping_value  = quote_json["order"]["shipping_value"]
-        quote.params.order.total           = quote_json["order"]["total"]
+      params.currency_code = quote_json["currency_code"]
+      params.txn_id        = quote_json["txn_id"]
+      params.cart_url      = quote_json["cart_url"]
+      params.success_url   = quote_json["success_url"]
+      params.cancel_url    = quote_json["cancel_url"]
+      params.error_url     = quote_json["error_url"]
+      params.refer_url     = quote_json["refer_url"]
+      params.decline_url   = quote_json["decline_url"]
+      params.in_store      = quote_json["in_store"]
+      params.quote_id      = quote_json["quote_id"]
+      params.checkout_source = quote_json["checkout_source"]
 
-        quote.params.order.detail[0] = Struct::Detail.new
-        
-        item = quote_json["order"]["detail"]
+      params.order.id              = quote_json["order"]["id"]
+      params.order.tax             = quote_json["order"]["tax"]
+      params.order.shipping_value  = quote_json["order"]["shipping_value"]
+      params.order.total           = quote_json["order"]["total"]
 
-        quote.params.order.detail[0].quantity = item[0]["quantity"]
-        quote.params.order.detail[0].name  = item[0]["name"]
-        quote.params.order.detail[0].price = item[0]["price"]
-        quote.params.order.detail[0].description = item[0]["description"]
-        quote.params.order.detail[0].sku = item[0]["sku"]
-        quote.params.order.detail[0].id  = item[0]["id"]
-        quote.params.order.detail[0].category  = item[0]["category"]
-        quote.params.order.detail[0].image_url = item[0]["image_url"]
+      item = Struct::Detail.new
+      
+      item.quantity = quote_json["order"]["detail"][0]["quantity"]
+      item.name     = quote_json["order"]["detail"][0]["name"]
+      item.price    = quote_json["order"]["detail"][0]["price"]
+      item.id       = quote_json["order"]["detail"][0]["id"]
+      
+      params.order.detail.push(item)
 
-        quote.params.billing_address.first_name = quote_json["billing_address"]["first_name"]
-        quote.params.billing_address.last_name  = quote_json["billing_address"]["last_name"]
-        quote.params.billing_address.line1      = quote_json["billing_address"]["line1"]
-        quote.params.billing_address.line2      = quote_json["billing_address"]["line2"]
-        quote.params.billing_address.country    = quote_json["billing_address"]["country"]
-        quote.params.billing_address.zip        = quote_json["billing_address"]["zip"]
-        quote.params.billing_address.city       = quote_json["billing_address"]["city"]
-        quote.params.billing_address.state      = quote_json["billing_address"]["state"]
-        
-        quote.params.shipping_address.first_name = quote_json["shipping_address"]["first_name"]
-        quote.params.shipping_address.last_name  = quote_json["shipping_address"]["last_name"]
-        quote.params.shipping_address.line1      = quote_json["shipping_address"]["line1"]
-        quote.params.shipping_address.line2      = quote_json["shipping_address"]["line2"]
-        quote.params.shipping_address.country    = quote_json["shipping_address"]["country"]
-        quote.params.shipping_address.zip        = quote_json["shipping_address"]["zip"]
-        quote.params.shipping_address.city       = quote_json["shipping_address"]["city"]
-        quote.params.shipping_address.state      = quote_json["shipping_address"]["state"]
+      params.billing_address.first_name = quote_json["billing_address"]["first_name"]
+      params.billing_address.last_name  = quote_json["billing_address"]["last_name"]
+      params.billing_address.line1      = quote_json["billing_address"]["line1"]
+      params.billing_address.line2      = quote_json["billing_address"]["line2"]
+      params.billing_address.country    = quote_json["billing_address"]["country"]
+      params.billing_address.zip        = quote_json["billing_address"]["zip"]
+      params.billing_address.city       = quote_json["billing_address"]["city"]
+      params.billing_address.state      = quote_json["billing_address"]["state"]
+      
+      params.shipping_address.first_name = quote_json["shipping_address"]["first_name"]
+      params.shipping_address.last_name  = quote_json["shipping_address"]["last_name"]
+      params.shipping_address.line1      = quote_json["shipping_address"]["line1"]
+      params.shipping_address.line2      = quote_json["shipping_address"]["line2"]
+      params.shipping_address.country    = quote_json["shipping_address"]["country"]
+      params.shipping_address.zip        = quote_json["shipping_address"]["zip"]
+      params.shipping_address.city       = quote_json["shipping_address"]["city"]
+      params.shipping_address.state      = quote_json["shipping_address"]["state"]
 
-        quote.params.consumer.first_name = quote_json["consumer"]["first_name"]
-        quote.params.consumer.last_name  = quote_json["consumer"]["last_name"]
-        quote.params.consumer.phone      = quote_json["consumer"]["phone"]
-        quote.params.consumer.gender     = quote_json["consumer"]["gender"]
-        quote.params.consumer.email      = quote_json["consumer"]["email"]
-        quote.params.consumer.dob        = quote_json["consumer"]["dob"]
-        quote.params.consumer.title      = quote_json["consumer"]["title"]
+      params.consumer.first_name = quote_json["consumer"]["first_name"]
+      params.consumer.last_name  = quote_json["consumer"]["last_name"]
+      params.consumer.phone      = quote_json["consumer"]["phone"]
+      params.consumer.gender     = quote_json["consumer"]["gender"]
+      params.consumer.email      = quote_json["consumer"]["email"]
+      params.consumer.dob        = quote_json["consumer"]["dob"]
+      params.consumer.title      = quote_json["consumer"]["title"]
 
       response = quote.do()
       puts response.toHash
@@ -183,11 +178,7 @@ describe ZipMoney::Api do
         capture.params.order.detail[0].quantity = item[0]["quantity"]
         capture.params.order.detail[0].name  = item[0]["name"]
         capture.params.order.detail[0].price = item[0]["price"]
-        capture.params.order.detail[0].description = item[0]["description"]
-        capture.params.order.detail[0].sku = item[0]["sku"]
-        capture.params.order.detail[0].id  = item[0]["id"]
-        capture.params.order.detail[0].category  = item[0]["category"]
-        capture.params.order.detail[0].image_url = item[0]["image_url"]
+        capture.params.order.detail[0].id    = item[0]["id"]
 
       response = capture.do()
       p response.toHash
@@ -220,11 +211,7 @@ describe ZipMoney::Api do
         refund.params.order.detail[0].quantity = item[0]["quantity"]
         refund.params.order.detail[0].name  = item[0]["name"]
         refund.params.order.detail[0].price = item[0]["price"]
-        refund.params.order.detail[0].description = item[0]["description"]
-        refund.params.order.detail[0].sku = item[0]["sku"]
         refund.params.order.detail[0].id  = item[0]["id"]
-        refund.params.order.detail[0].category  = item[0]["category"]
-        refund.params.order.detail[0].image_url = item[0]["image_url"]
 
       response = refund.do()
       p response.toHash
@@ -254,11 +241,7 @@ describe ZipMoney::Api do
         cancel.params.order.detail[0].quantity = item[0]["quantity"]
         cancel.params.order.detail[0].name  = item[0]["name"]
         cancel.params.order.detail[0].price = item[0]["price"]
-        cancel.params.order.detail[0].description = item[0]["description"]
-        cancel.params.order.detail[0].sku = item[0]["sku"]
         cancel.params.order.detail[0].id  = item[0]["id"]
-        cancel.params.order.detail[0].category  = item[0]["category"]
-        cancel.params.order.detail[0].image_url = item[0]["image_url"]
 
       response = cancel.do()
       p response.toHash
@@ -272,10 +255,9 @@ describe ZipMoney::Api do
 
       # Request 
       query = ZipMoney::Query.new
-        query.params.orders[0] = Struct::QueryOrder.new
 
+        query.params.orders[0] = Struct::QueryOrder.new
         query.params.orders[0].id     = @order_id
-        query.params.orders[0].status = query_json["orders"][0]["shipping_value"]
 
       response = query.do()
       p response.toHash
