@@ -38,12 +38,12 @@ checkout = ZipMoney::Checkout.new
 checkout.params.charge        = false 					 
 checkout.params.currency_code = "AUD"   
 checkout.params.txn_id        = "12345" 
-quote.params.cart_url         = "https://your-domain/checkout/cart/"
-quote.params.success_url      = "https://your-domain/zipmoney/express/success/"
-quote.params.cancel_url       = "https://your-domain/zipmoney/express/cancel/"
-quote.params.error_url        = "https://your-domain/zipmoney/express/error/"
-quote.params.refer_url        = "https://your-domain/zipmoney/express/refer/"
-quote.params.decline_url      = "https://your-domain/zipmoney/express/decline/"
+checkout.params.cart_url      = "https://your-domain/checkout/cart/"
+checkout.params.success_url   = "https://your-domain/zipmoney/express/success/"
+checkout.params.cancel_url    = "https://your-domain/zipmoney/express/cancel/"
+checkout.params.error_url     = "https://your-domain/zipmoney/express/error/"
+checkout.params.refer_url     = "https://your-domain/zipmoney/express/refer/"
+checkout.params.decline_url   = "https://your-domain/zipmoney/express/decline/"
 checkout.params.order_id      = "91005500"
 
 # Order Info
@@ -236,6 +236,7 @@ end
 
 ##### Query
 Queries orders
+
 ```ruby
 # Initialize the query
 query = ZipMoney::Query.new

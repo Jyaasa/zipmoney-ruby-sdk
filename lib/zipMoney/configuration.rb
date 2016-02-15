@@ -1,7 +1,7 @@
 module ZipMoney
 	class Configuration
 		
-		API_VERSION  = "1.0.4"
+		API_VERSION  = "1.0.5"
 		API_PLATFORM = "ruby"
 		API_NAME	   = "zipMoney Ruby SDK"
 
