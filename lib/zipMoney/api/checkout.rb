@@ -4,7 +4,7 @@ module ZipMoney
     
     attr_accessor :params
 
-    Struct.new("CheckoutParams", :charge, :currency_code, :return_url, :cancel_url, :notify_url, :error_url, :in_store, :txn_id, :token, :merchant_id, :merchant_key, 
+    Struct.new("CheckoutParams", :charge, :currency_code, :cart_url, :success_url, :cancel_url, :refer_url, :error_url, :decline_url, :in_store, :txn_id, :token, :merchant_id, :merchant_key, 
                   :order_id, :order, :consumer, :billing_address, :shipping_address, :version, :metadata)
     
     # Initializes a ZipMoney::Checkout object

@@ -38,10 +38,12 @@ checkout = ZipMoney::Checkout.new
 checkout.params.charge        = false 					 
 checkout.params.currency_code = "AUD"   
 checkout.params.txn_id        = "12345" 
-checkout.params.return_url    = "https://your-domain/zipmoney/standard/success/"  
-checkout.params.cancel_url    = "https://your-domain/zipmoney/standard/cancel/"	  
-checkout.params.notify_url    = "https://your-domain/zipmoney/standard/success/"  
-checkout.params.error_url     = "https://your-domain/zipmoney/standard/error/",	
+quote.params.cart_url         = "https://your-domain/checkout/cart/"
+quote.params.success_url      = "https://your-domain/zipmoney/express/success/"
+quote.params.cancel_url       = "https://your-domain/zipmoney/express/cancel/"
+quote.params.error_url        = "https://your-domain/zipmoney/express/error/"
+quote.params.refer_url        = "https://your-domain/zipmoney/express/refer/"
+quote.params.decline_url      = "https://your-domain/zipmoney/express/decline/"
 checkout.params.order_id      = "91005500"
 
 # Order Info
@@ -98,6 +100,7 @@ end
 ```
 ##### Quote
 Order should be created after payment is complete, usually when the zipMoney api invokes the /confirmorder endpoint of the store or on the return journey
+
 ```ruby
 # Initialize the checkout
 quote = ZipMoney::Quote.new
@@ -168,6 +171,7 @@ end
 
 ##### Refund
 Performs full or partial refund of the order
+
 ```ruby
 # Initialize the refund
 refund = ZipMoney::Refund.new
@@ -200,6 +204,7 @@ end
 
 ##### Cancel
 Performs cancellation of the order
+
 ```ruby
 # Initialize the cancel
 cancel = ZipMoney::Cancel.new
@@ -252,6 +257,7 @@ end
 
 ##### Capture
 Captures the payment for the order
+
 ```ruby
 # Initialize the capture
 capture = ZipMoney::Capture.new
