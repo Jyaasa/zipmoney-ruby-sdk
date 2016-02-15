@@ -15,7 +15,7 @@ end
 task :publish do
 	if  ENV['branch'] =~ /^(\*|\d+(\.\d+){0,2}(\.\*)?)$/
 		puts "Is a tag! So publishing gem to rubygems.org ..."
-		arguments = ['gem', 'push', "pkg/zipMoney-${#ENV['branch']}.gem"]
+		arguments = ['gem', 'push', "pkg/zipMoney-#{ENV['branch']}.gem"]
         system(*arguments)
     else
 		puts "Not a tag!"	
