@@ -34,10 +34,12 @@ describe ZipMoney::Api do
       params.charge        = checkout_json["charge"]
       params.currency_code = checkout_json["currency_code"]
       params.txn_id        = checkout_json["txn_id"]
-      params.return_url    = checkout_json["return_url"]
+      params.cart_url      = checkout_json["cart_url"]
+      params.success_url   = checkout_json["success_url"]
       params.cancel_url    = checkout_json["cancel_url"]
-      params.notify_url    = checkout_json["notify_url"]
       params.error_url     = checkout_json["error_url"]
+      params.refer_url     = checkout_json["refer_url"]
+      params.decline_url   = checkout_json["decline_url"]
       params.in_store      = checkout_json["in_store"]
       params.order_id      = @order_id
 
