@@ -49,7 +49,7 @@ describe ZipMoney::Api do
       params.order.total           = checkout_json["order"]["total"]
 
       item = Struct::Detail.new
-      
+
       item.quantity = checkout_json["order"]["detail"][0]["quantity"]
       item.name     = checkout_json["order"]["detail"][0]["name"]
       item.price    = checkout_json["order"]["detail"][0]["price"]
@@ -169,16 +169,7 @@ describe ZipMoney::Api do
         capture.params.order.tax             = capture_json["order"]["tax"]
         capture.params.order.shipping_value  = capture_json["order"]["shipping_value"]
         capture.params.order.total           = capture_json["order"]["total"]
-
-        capture.params.order.detail[0] = Struct::Detail.new
-        
-        item = capture_json["order"]["detail"]
-
-        capture.params.order.detail[0].quantity = item[0]["quantity"]
-        capture.params.order.detail[0].name  = item[0]["name"]
-        capture.params.order.detail[0].price = item[0]["price"]
-        capture.params.order.detail[0].id    = item[0]["id"]
-
+       
       response = capture.do()
       response.isSuccess.should be_truthy
 
@@ -193,7 +184,6 @@ describe ZipMoney::Api do
       refund = ZipMoney::Refund.new
 
         refund.params.reason        = refund_json["reason"]
-        refund.params.refund_amount = refund_json["refund_amount"]
         refund.params.txn_id        = refund_json["txn_id"]
         refund.params.order_id      = @order_id
 
@@ -201,15 +191,6 @@ describe ZipMoney::Api do
         refund.params.order.tax             = refund_json["order"]["tax"]
         refund.params.order.shipping_value  = refund_json["order"]["shipping_value"]
         refund.params.order.total           = refund_json["order"]["total"]
-
-        refund.params.order.detail[0] = Struct::Detail.new
-        
-        item = refund_json["order"]["detail"]
-
-        refund.params.order.detail[0].quantity = item[0]["quantity"]
-        refund.params.order.detail[0].name  = item[0]["name"]
-        refund.params.order.detail[0].price = item[0]["price"]
-        refund.params.order.detail[0].id  = item[0]["id"]
 
       response = refund.do()
       response.isSuccess.should be_truthy
@@ -230,15 +211,6 @@ describe ZipMoney::Api do
         cancel.params.order.tax             = cancel_json["order"]["tax"]
         cancel.params.order.shipping_value  = cancel_json["order"]["shipping_value"]
         cancel.params.order.total           = cancel_json["order"]["total"]
-
-        cancel.params.order.detail[0] = Struct::Detail.new
-        
-        item = cancel_json["order"]["detail"]
-
-        cancel.params.order.detail[0].quantity = item[0]["quantity"]
-        cancel.params.order.detail[0].name  = item[0]["name"]
-        cancel.params.order.detail[0].price = item[0]["price"]
-        cancel.params.order.detail[0].id  = item[0]["id"]
 
       response = cancel.do()
       response.isSuccess.should be_truthy

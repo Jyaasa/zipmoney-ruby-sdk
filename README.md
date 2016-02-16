@@ -185,12 +185,6 @@ refund.params.order.tax             = 0
 refund.params.order.shipping_value  = 0
 refund.params.order.total           = 339
 
-refund.params.order.detail[0] = Struct::Detail.new
-refund.params.order.detail[0].quantity = 1
-refund.params.order.detail[0].name  = "Item Name"
-refund.params.order.detail[0].price = 339
-refund.params.order.detail[0].id  = 155
-
 response = refund.do()  
 
 if response.isSuccess
@@ -217,12 +211,6 @@ cancel.params.order.tax             = 0
 cancel.params.order.shipping_value  = 0
 cancel.params.order.total           = 339
 
-cancel.params.order.detail[0] = Struct::Detail.new
-cancel.params.order.detail[0].quantity = 1
-cancel.params.order.detail[0].name  = "Item Name"
-cancel.params.order.detail[0].price = 339
-cancel.params.order.detail[0].id  = 155
-
 response = cancel.do()  
 
 if response.isSuccess
@@ -233,6 +221,31 @@ else
 end   
 ```
 
+
+##### Capture
+Captures the payment for the order
+
+```ruby
+# Initialize the capture
+capture = ZipMoney::Capture.new
+
+capture.params.txn_id        = 12345
+capture.params.order_id      = 95001111
+
+capture.params.order.id              = 95001111
+capture.params.order.tax             = 0
+capture.params.order.shipping_value  = 0
+capture.params.order.total           = 339
+
+response = capture.do()  
+
+if response.isSuccess
+   # do something
+else
+   # do something 
+   # response.getError 
+end   
+```
 
 ##### Query
 Queries orders
@@ -255,38 +268,6 @@ end
 ```
 
 
-
-##### Capture
-Captures the payment for the order
-
-```ruby
-# Initialize the capture
-capture = ZipMoney::Capture.new
-
-capture.params.txn_id        = 12345
-capture.params.order_id      = 95001111
-
-capture.params.order.id              = 95001111
-capture.params.order.tax             = 0
-capture.params.order.shipping_value  = 0
-capture.params.order.total           = 339
-
-capture.params.order.detail[0] = Struct::Detail.new
-capture.params.order.detail[0].quantity = 1
-capture.params.order.detail[0].name  = "Item Name"
-capture.params.order.detail[0].price = 339
-capture.params.order.detail[0].id  = 155
-
-
-response = capture.do()  
-
-if response.isSuccess
-   # do something
-else
-   # do something 
-   # response.getError 
-end   
-```
 
 
 ## License

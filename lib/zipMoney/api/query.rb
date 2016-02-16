@@ -29,7 +29,7 @@ module ZipMoney
     def validate
       raise ArgumentError, "Params emtpy" if @params.nil? 
       @errors = []
-      @errors << 'at least one order must be provided' if @params.orders.nil? 
+      @errors << 'at least one order must be provided' unless @params.orders.length > 0
 
       @params.orders.each_with_index do |item,index|
         @errors << "order.detail[#{index}].id must be provided" if item.id.nil? 
