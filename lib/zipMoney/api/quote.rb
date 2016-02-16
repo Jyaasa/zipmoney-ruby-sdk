@@ -44,9 +44,9 @@ module ZipMoney
       @errors << 'order.total must be provided' if @params.order.total.nil? 
       @errors << 'order.shipping_value must be provided' if @params.order.shipping_value.nil? 
       @errors << 'order.tax must be provided' if @params.order.tax.nil? 
-      @errors << 'order detail must be provided' if @params.order.detail.nil? 
+      @errors << 'order detail must be provided' unless @params.order.detail.length > 0 
 
-      validate_item_details @params.order.detail
+      validate_item_details @params.order.detail if @params.order.detail.length > 0 
 
       raise ZipMoney::RequestError.new("Following error(s) occurred while making request, please resolve them to make the request: #{@errors}") if @errors.any?
     end

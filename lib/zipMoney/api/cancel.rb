@@ -3,6 +3,7 @@ module ZipMoney
     include Request
 
     attr_accessor :params
+
     Struct.new("CancelParams", :txn_id, :merchant_id, :merchant_key, :order, :order_id, :quote_id, :reference, :version, :metadata)
 
     # Initializes a ZipMoney::Cancel object
@@ -11,7 +12,6 @@ module ZipMoney
     def initialize 
       @params      = Struct::CancelParams.new
       @params.order    = Struct::Order.new
-      @params.order.detail =  Array.new
       @params.metadata = Struct::Metadata.new
       @params.version  = Struct::Version.new
     end
@@ -34,10 +34,7 @@ module ZipMoney
       @errors << 'order.total must be provided' if@params.order.total.nil? 
       @errors << 'order.shipping_value must be provided' if @params.order.shipping_value.nil? 
       @errors << 'order.tax must be provided' if @params.order.tax.nil? 
-      @errors << 'order detail must be provided' if @params.order.detail.nil? 
       
-      validate_item_details @params.order.detail
-
       raise ZipMoney::RequestError.new("Following error(s) occurred while making request, please resolve them to make the request: #{@errors}") if @errors.any?
     end
   end

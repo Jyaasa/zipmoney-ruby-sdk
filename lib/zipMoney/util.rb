@@ -9,20 +9,19 @@ module ZipMoney
     # @return Hash
     def struct_to_hash(object)
       hash = {}
-      object.to_h.each  do |k,v| 
+      object.to_h.each  do |k,v|           
+
         if v.is_a?(Struct) 
           v = struct_to_hash(v)
           hash[k] = v unless v.empty?
         elsif v.is_a?(Array)
-          
           a = Array.new
           v.each_with_index do  |k1,v1|  
             v2 = struct_to_hash(k1) 
             a[v1] = v2  unless v2.empty?
-          end
-
-          hash[k] = a
-        else
+          end 
+          hash[k] = a  if  a.length > 0
+        else 
           hash[k] = v unless v.nil?
         end
       end
