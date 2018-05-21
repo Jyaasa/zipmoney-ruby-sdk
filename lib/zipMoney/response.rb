@@ -1,6 +1,6 @@
 module ZipMoney
   class Response
-        
+   
     attr_accessor :_response , :_responseBody, :_responseHeader, :_statusCode
 
     # Initializes a new api response object
@@ -28,8 +28,23 @@ module ZipMoney
     # @return OpenStruct
     def toObject
       raise ResponseError, "Response body doesnot exist" if @_responseBody.nil? || @_responseBody.empty?
-      responseObject = JSON.parse(@_responseBody, object_class: OpenStruct)
+
+      if valid_json?(@_responseBody) #Is Json
+        responseObject = JSON.parse(@_responseBody, object_class: OpenStruct)
+      #else  # Is XML
+        #responseObject  = JSON.parse(responseObject.to_json, object_class: OpenStruct)   
+        #puts responseObject
+      end
       responseObject
+    end
+
+    def valid_json?(json)
+      begin
+        JSON.parse(json)
+        return true
+      rescue Exception => e
+        return false
+      end
     end
       
     # Returns the redirect_url from the checkout and quote calls

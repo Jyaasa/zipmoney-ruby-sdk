@@ -4,7 +4,7 @@ require 'spec_helper'
 describe ZipMoney::Express do
   	before :each do
       # Setup the gateway for testing
-      ZipMoney::Configuration.merchant_id  = 86
+      ZipMoney::Configuration.merchant_id  = "86"
       ZipMoney::Configuration.merchant_key = "QCXlS0BOrFl+hkd2fbSR7ujEuDP4WZECYw4oB0il5eE="
       ZipMoney::Configuration.environment  = 'sandbox'
          
