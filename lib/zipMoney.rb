@@ -34,7 +34,7 @@ module ZipMoney
 
   # Configure the api
   def configure_api
-    options = {:headers => {:content_type => :json}}
+    options = {:headers => {:content_type => :json ,:accept=> :json}}
     @_api = ZipMoney::Api.new(@config,options)
   end
   
